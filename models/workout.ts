@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize"
-import { sequelize } from '../utils/db.ts'
+import { sequelize } from '../utils/db'
 
 class Workout extends Model { }
 

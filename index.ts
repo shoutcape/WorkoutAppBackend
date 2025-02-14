@@ -1,6 +1,6 @@
 import express from 'express';
 const app = express();
-import workoutsRouter from './controllers/workouts.ts'
+import workoutsRouter from './controllers/workouts'
 import morgan from 'morgan';
 
 // Middleware

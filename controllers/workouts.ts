@@ -1,7 +1,7 @@
 import {Router} from 'express'
 
 const router = Router()
-import {Workout} from "../models/index.ts"
+import {Workout} from "../models/index"
 
 router.get('/api/workouts', async(req, res) => {
   const workouts = await Workout.findAll()

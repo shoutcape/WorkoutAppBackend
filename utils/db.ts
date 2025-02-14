@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize"
-import config from './config.ts'
+import config from './config'
 
 if (!config.DATABASE_URL) {
   throw new Error('DATABASE_URL environment variable is not set');

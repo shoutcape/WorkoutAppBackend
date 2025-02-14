@@ -1,4 +1,4 @@
-import Workout from "./workout.ts";
+import Workout from "./workout";
 
 Workout.sync()
 
