@@ -3,7 +3,7 @@ dotenv.config()
 
 const config = {
   DATABASE_URL: process.env.DATABASE_URL,
-  PORT: process.env.PORT || 3001,
+  PORT: process.env.PORT || 3000,
 }
 
 export default config

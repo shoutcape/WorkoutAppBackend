@@ -8,8 +8,19 @@ router.get('/api/workouts', async(req, res) => {
   res.json(workouts)
 })
 
+router.get('/api/workouts/:id', async(req, res) => {
+  const workouts = await Workout.findByPk(req.params.id)
+  res.json(workouts)
+})
+
 router.post('/api/workouts', async(req, res) => {
   const workout = await Workout.create(req.body)
+  res.json(workout)
+})
+
+router.delete('/api/workouts/:id', async(req, res) => {
+  const workoutId = req.params.id
+  const workout = await Workout.destroy({where: {id: workoutId}})
   res.json(workout)
 })
 
