@@ -12,8 +12,8 @@ app.use(morgan('dev'));
 app.use(cors())
 
 //Routes
-app.use("/", workoutRouter)
-app.use("/", userRouter)
+app.use("/api", workoutRouter)
+app.use("/api", userRouter)
 
 // Start Server
 const PORT = config.PORT || 5000;
