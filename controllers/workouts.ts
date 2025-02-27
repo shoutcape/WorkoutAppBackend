@@ -1,27 +1,27 @@
 import {Router} from 'express'
 
-const router = Router()
-import {Workout} from "../models/index"
+const workoutRouter = Router()
+import {Workout} from "../models"
 
-router.get('/api/workouts', async(req, res) => {
+workoutRouter.get('/api/workouts', async(req, res) => {
   const workouts = await Workout.findAll()
   res.json(workouts)
 })
 
-router.get('/api/workouts/:id', async(req, res) => {
+workoutRouter.get('/api/workouts/:id', async(req, res) => {
   const workouts = await Workout.findByPk(req.params.id)
   res.json(workouts)
 })
 
-router.post('/api/workouts', async(req, res) => {
+workoutRouter.post('/api/workouts', async(req, res) => {
   const workout = await Workout.create(req.body)
   res.json(workout)
 })
 
-router.delete('/api/workouts/:id', async(req, res) => {
+workoutRouter.delete('/api/workouts/:id', async(req, res) => {
   const workoutId = req.params.id
   const workout = await Workout.destroy({where: {id: workoutId}})
   res.json(workout)
 })
 
-export default router
+export default workoutRouter

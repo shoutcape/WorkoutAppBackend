@@ -9,6 +9,14 @@ Workout.init({
     primaryKey: true,
     autoIncrement: true
   },
+  userId: {
+    type:DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'user',
+      key: 'id'
+    }
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -19,7 +27,6 @@ Workout.init({
   date: {
     type: DataTypes.DATEONLY
   }
-
 }, {
     sequelize,
     underscored: true,
