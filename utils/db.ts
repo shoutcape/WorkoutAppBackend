@@ -8,10 +8,10 @@ if (!config.DATABASE_URL) {
 }
 const sequelize = new Sequelize(config.DATABASE_URL, {
   dialectOptions: {
-    ssl: {
+    ssl: config.ssl ? {
       require: true,
       rejectUnauthorized: false
-    }
+    }: false
   },
 })
 

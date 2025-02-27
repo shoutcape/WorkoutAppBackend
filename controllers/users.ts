@@ -8,4 +8,10 @@ userRouter.get('/users', async (req, res) => {
   res.json(users);
 });
 
+userRouter.post('/users', async (req, res) => {
+  const { username, passwordHash } = req.body
+  const newUser = await User.create({ username, passwordHash})
+  res.status(201).json(newUser)
+})
+
 export default userRouter;

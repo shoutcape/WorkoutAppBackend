@@ -33,20 +33,23 @@ const addWorkouts = async(): Promise<void> => {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
 
+    await User.sync({force: true})
+    await Workout.sync({force: true})
+    console.log('both models were reset')
+
     const users: UserCreationAttributes[] = [
       {
-        id: 1,
         username: 'john_doe',
         passwordHash: 'hashed_password_1'
       },
       {
-        id:2,
         username: 'jane_doe',
         passwordHash: 'hashed_password_2'
       }
     ];
 
     await User.bulkCreate(users);
+    console.log('Users have been added')
 
     const workouts: WorkoutCreationAttributes[] = [
       {
@@ -192,6 +195,8 @@ const addWorkouts = async(): Promise<void> => {
     console.log('Users and workouts have been added successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
+  } finally {
+    await sequelize.close()
   }
 }
 
