@@ -33,9 +33,6 @@ const addWorkouts = async(): Promise<void> => {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
 
-    await Workout.sync();
-    await User.sync();
-
     const users: UserCreationAttributes[] = [
       {
         id: 1,
@@ -195,23 +192,8 @@ const addWorkouts = async(): Promise<void> => {
     console.log('Users and workouts have been added successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
-  } finally {
-    await sequelize.close();
   }
 }
 
-const resetDB = async () => {
-  try {
-    await sequelize.authenticate();
-    await Workout.drop();
-    await User.drop();
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
-
 // Run the function to add workouts
-resetDB();
-//setTimeout(() => {
-//  addWorkouts();
-//}, 6000);
+  addWorkouts();

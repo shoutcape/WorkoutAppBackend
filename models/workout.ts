@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize"
 import { sequelize } from '../utils/db'
+import User from "./user"
 
 class Workout extends Model { }
 
@@ -13,7 +14,7 @@ Workout.init({
     type:DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'user',
+      model: User,
       key: 'id'
     }
   },
@@ -31,7 +32,9 @@ Workout.init({
     sequelize,
     underscored: true,
     timestamps: false,
-    modelName: 'workout'
+    modelName: 'Workout',
+    tableName: 'workouts'
   })
+
 
 export default Workout
