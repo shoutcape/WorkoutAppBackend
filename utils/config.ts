@@ -1,14 +1,15 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-const isDevelopment = process.env.NODE_ENV === 'development'
+//true if production, false if development
+const isProduction = process.env.NODE_ENV !== 'development'
 
 const config = {
-  DATABASE_URL: isDevelopment
-    ? 'postgres://postgres:salasana@localhost:5432/postgres' 
-    : process.env.DATABASE_URL,
+  DATABASE_URL:isProduction 
+    ? process.env.DATABASE_URL
+    : 'postgres://postgres:salasana@localhost:5432/postgres' ,
   PORT: process.env.PORT || 3000,
-  ssl: !isDevelopment
+  ssl: isProduction
 }
 
 export default config
