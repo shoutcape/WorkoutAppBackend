@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import config from './utils/config';
 import cors from 'cors'
 import userRouter from './controllers/users';
+import { sequelize } from './utils/db';
 
 // Middleware
 app.use(express.json());
@@ -14,6 +15,11 @@ app.use(cors())
 //Routes
 app.use("/api", workoutRouter)
 app.use("/api", userRouter)
+
+
+sequelize.authenticate()
+  .then(() => console.log('Database connected'))
+  .catch(err => console.error('Database connection error:', err));
 
 // Start Server
 const PORT = config.PORT || 5000;

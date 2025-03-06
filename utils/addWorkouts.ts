@@ -10,7 +10,7 @@ interface WorkoutAttributes {
   id: number;
   userId: number;
   name: string;
-  exercises: object;
+  exercises: object[];
   date: string;
 }
 
