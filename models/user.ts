@@ -1,32 +1,29 @@
-import {
-  DataTypes,
-  Model,
-  InferAttributes,
-  InferCreationAttributes,
-  CreationOptional,
-} from '@sequelize/core';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../utils/db';
 
-import { Attribute, PrimaryKey, AutoIncrement, NotNull, HasMany } from '@sequelize/core/decorators-legacy';
-import {Workout} from './workout';
-import { NonAttribute } from 'sequelize';
+class User extends Model {}
 
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    passwordHash: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'User',
+    tableName: 'users',
+  },
+);
 
-export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> { 
-  @Attribute(DataTypes.INTEGER)
-  @PrimaryKey
-  @AutoIncrement
-  declare id: CreationOptional<number>;
-
-  @Attribute(DataTypes.STRING)
-  @NotNull
-  username!: string;
-
-  @Attribute(DataTypes.STRING)
-  @NotNull
-  passwordHash!: string;
-
-  //reference to Workout model by userId
-  @HasMany(() => Workout, 'userId')
-  declare workouts?: NonAttribute<Workout[]>;
-}
-
+export default User;

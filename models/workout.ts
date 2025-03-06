@@ -1,35 +1,42 @@
-import {
-  DataTypes,
-  Model,
-  InferAttributes,
-  InferCreationAttributes,
-  CreationOptional,
-} from '@sequelize/core';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../utils/db';
+import User from './user';
 
-import { Attribute, PrimaryKey, AutoIncrement, NotNull, HasOne, BelongsTo } from '@sequelize/core/decorators-legacy';
-import {User} from './user';
-import { NonAttribute } from 'sequelize';
+class Workout extends Model {}
 
-export class Workout extends Model<InferAttributes<Workout>, InferCreationAttributes<Workout>> { 
-  @Attribute(DataTypes.INTEGER)
-  @PrimaryKey
-  @AutoIncrement
-  declare id: CreationOptional<number>;
+Workout.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: User,
+        key: 'id',
+      },
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    exercises: {
+      type: DataTypes.JSONB,
+    },
+    date: {
+      type: DataTypes.DATEONLY,
+    },
+  },
+  {
+    sequelize,
+    underscored: true,
+    timestamps: false,
+    modelName: 'Workout',
+    tableName: 'workouts',
+  },
+);
 
-  @BelongsTo(() => User, 'userId')
-  declare user?: NonAttribute<User>
-
-  @Attribute(DataTypes.INTEGER)
-  @NotNull
-  declare userId: number 
-
-  @Attribute(DataTypes.STRING)
-  @NotNull
-  declare name: string
-
-  @Attribute(DataTypes.JSONB)
-  declare exercises: CreationOptional<Object[]>
-
-  @Attribute(DataTypes.DATEONLY)
-  declare date: string
-}
+export default Workout

@@ -19,7 +19,7 @@ app.use("/api", userRouter)
 
 sequelize.authenticate()
   .then(() => console.log('Database connected'))
-  .catch(err => console.error('Database connection error:', err));
+  .catch((err: Error) => console.error('Database connection error:', err));
 
 // Start Server
 const PORT = config.PORT || 5000;
