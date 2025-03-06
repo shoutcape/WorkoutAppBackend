@@ -13,7 +13,6 @@ const sequelizeOptions: Options = {
   ssl: config.ssl,
 }
 
-
 if (config.ssl) {
   sequelizeOptions.dialectOptions = {
     ssl: {
