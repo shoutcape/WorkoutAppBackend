@@ -1,47 +1,32 @@
-import { Router } from 'express';
+import { Router, Response, Request } from 'express';
 import { User } from '../models';
-import bcrypt from 'bcrypt'
+import { hash } from 'bcryptjs';
 
 const userRouter = Router();
 
 //Fetch users
-userRouter.get('/users', async (req, res) => {
+userRouter.get('/users', async (_req, res: Response) => {
   const users = await User.findAll();
   res.json(users);
 });
 
 //Add new User
-userRouter.post('/users', async (req, res) => {
-  const { username, password } = req.body
-  const saltRounds = 10
+userRouter.post('/users', async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const saltRounds = 10;
+
   if (!password) {
-    res.status(400).json({ error: 'Password is required '})
-    return
+    throw new Error('Password is required');
   }
 
-  bcrypt.genSalt(saltRounds, (err, salt) => {
-    if (err) {
-      console.log('Error generating hashSalt', err);
-      res.status(500).json({ error: 'Error generating hashSalt' });
-      return;
-    }
-    //generate hash of password
-    bcrypt.hash(password, salt, (err, hash) => {
-      if (err) {
-        console.log('Error generating hash', err);
-        res.status(500).json({error: 'Error generating hash'})
-        return
-      }
-      console.log(hash)
-  //add user to database
-    User.create({
-      username: username,
-      passwordHash: hash
-    })
+  const passwordHash = await hash(password, saltRounds);
 
-    res.json({ message: salt });
-    })
+  //add user to database
+  const newUser = await User.create({
+    username: username,
+    passwordHash: passwordHash,
   });
-})
+  res.status(201).json({ newUser });
+});
 
 export default userRouter;

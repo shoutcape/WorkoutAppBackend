@@ -9,6 +9,7 @@ if (!config.DATABASE_URL) {
 const sequelizeOptions: Options = {
   dialect: 'postgres',
   ssl: config.ssl,
+  logging: false,
 }
 
 if (config.ssl) {
