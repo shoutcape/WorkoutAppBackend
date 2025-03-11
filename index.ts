@@ -31,8 +31,6 @@ sequelize.authenticate()
 
 // Start Server
 const PORT = config.PORT || 5000;
-
-
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     logger.info(`🚀 Server running on http://localhost:${PORT} 🗿🗿🗿🗿`);

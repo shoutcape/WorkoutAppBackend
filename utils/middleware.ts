@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
 
-const errorHandler = (err: Error, _req: Request, res: Response) => {
+const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
   logger.error(err.message);
 
   // Handling specific error types

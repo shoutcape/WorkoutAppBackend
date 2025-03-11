@@ -5,7 +5,7 @@ import { hash } from 'bcryptjs';
 const userRouter = Router();
 
 //Fetch users
-userRouter.get('/users', async (_req, res: Response) => {
+userRouter.get('/users', async (_req: Request, res: Response) => {
   const users = await User.findAll();
   res.json(users);
 });
