@@ -7,12 +7,12 @@ class Workout extends Model {}
 Workout.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: User,
@@ -27,7 +27,7 @@ Workout.init(
       type: DataTypes.JSONB,
     },
     date: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
     },
   },
   {

@@ -2,29 +2,19 @@ import { Optional } from 'sequelize';
 import { sequelize } from './db';
 import dotenv from 'dotenv';
 import { User, Workout } from '../models';
+import { v4 as randomUUID } from 'uuid';
 
 dotenv.config();
 
-// Define the attributes for the Workout model
-interface WorkoutAttributes {
-  id: number;
-  userId: number;
-  name: string;
-  exercises: object[];
-  date: string;
-}
-
-// Define the creation attributes for the Workout model
-interface WorkoutCreationAttributes extends Optional<WorkoutAttributes, 'id'> { }
 
 // Define the attributes for the User model
 interface UserAttributes {
-  id: number;
+  id: string;
   username: string;
   passwordHash: string;
 }
 
-// Define the creation attributes for the User model
+// Define the creation attributes for the Workout model
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
 
 // Function to add workouts to the database
@@ -37,12 +27,17 @@ const addWorkouts = async(): Promise<void> => {
     await Workout.sync({force: true})
     console.log('both models were reset')
 
+    const userID1 = "af20f26b-b31e-4056-b21d-befdeb705c6c" 
+    const userID2 = "f65ca8ba-b1b2-4c95-aeb0-f95885a6e189"
+
     const users: UserCreationAttributes[] = [
       {
+        id: userID1,
         username: 'john_doe',
         passwordHash: 'hashed_password_1'
       },
       {
+        id: userID2,
         username: 'jane_doe',
         passwordHash: 'hashed_password_2'
       }
@@ -51,143 +46,143 @@ const addWorkouts = async(): Promise<void> => {
     await User.bulkCreate(users);
     console.log('Users have been added')
 
-    const workouts: WorkoutCreationAttributes[] = [
+    const workouts = [
       {
-        userId: 1,
+        userId: userID2,
         name: 'Push Day',
         exercises: [
           {
-            id: 7,
+            id: randomUUID(),
             name: 'Overhead Shoulder Press',
             sets: [
-              { id: 20, reps: 8, weight: 95 },
-              { id: 21, reps: 8, weight: 95 },
-              { id: 22, reps: 8, weight: 95 },
-              { id: 23, reps: 8, weight: 95 },
+              { id: randomUUID(), reps: 8, weight: 95 },
+              { id: randomUUID(), reps: 8, weight: 95 },
+              { id: randomUUID(), reps: 8, weight: 95 },
+              { id: randomUUID(), reps: 8, weight: 95 },
             ],
           },
           {
-            id: 8,
+            id: randomUUID(),
             name: 'Tricep Dips',
             sets: [
-              { id: 24, reps: 10 },
-              { id: 25, reps: 10 },
-              { id: 26, reps: 10 },
+              { id: randomUUID(), reps: 10 },
+              { id: randomUUID(), reps: 10 },
+              { id: randomUUID(), reps: 10 },
             ],
           },
           {
-            id: 9,
+            id: randomUUID(),
             name: 'Incline Dumbbell Press',
             sets: [
-              { id: 27, reps: 12, weight: 60 },
-              { id: 28, reps: 12, weight: 60 },
-              { id: 29, reps: 12, weight: 60 },
+              { id: randomUUID(), reps: 12, weight: 60 },
+              { id: randomUUID(), reps: 12, weight: 60 },
+              { id: randomUUID(), reps: 12, weight: 60 },
             ],
           },
         ],
-        date: '2023-10-20',
+        date: new Date('2024-02-15'),
       },
       {
-        userId: 2,
+        userId: userID1,
         name: 'Pull Day',
         exercises: [
           {
-            id: 10,
+            id: randomUUID(),
             name: 'Deadlifts',
             sets: [
-              { id: 30, reps: 6, weight: 245 },
-              { id: 31, reps: 6, weight: 245 },
-              { id: 32, reps: 6, weight: 245 },
-              { id: 33, reps: 6, weight: 245 },
+              { id: randomUUID(), reps: 6, weight: 245 },
+              { id: randomUUID(), reps: 6, weight: 245 },
+              { id: randomUUID(), reps: 6, weight: 245 },
+              { id: randomUUID(), reps: 6, weight: 245 },
             ],
           },
           {
-            id: 11,
+            id: randomUUID(),
             name: 'Lat Pulldown',
             sets: [
-              { id: 34, reps: 10, weight: 120 },
-              { id: 35, reps: 10, weight: 120 },
-              { id: 36, reps: 10, weight: 120 },
+              { id: randomUUID(), reps: 10, weight: 120 },
+              { id: randomUUID(), reps: 10, weight: 120 },
+              { id: randomUUID(), reps: 10, weight: 120 },
             ],
           },
           {
-            id: 12,
+            id: randomUUID(),
             name: 'Barbell Rows',
             sets: [
-              { id: 37, reps: 8, weight: 155 },
-              { id: 38, reps: 8, weight: 155 },
-              { id: 39, reps: 8, weight: 155 },
+              { id: randomUUID(), reps: 8, weight: 155 },
+              { id: randomUUID(), reps: 8, weight: 155 },
+              { id: randomUUID(), reps: 8, weight: 155 },
             ],
           },
         ],
-        date: '2023-10-25',
+        date: new Date('2024-03-01'),
       },
       {
-        userId: 2,
+        userId: userID1,
         name: 'Yoga & Mobility',
         exercises: [
           {
-            id: 13,
+            id: randomUUID(),
             name: 'Downward Dog',
             sets: [
-              { id: 40, duration: '30 sec' },
-              { id: 41, duration: '30 sec' },
-              { id: 42, duration: '30 sec' },
+              { id: randomUUID(), duration: '30 sec' },
+              { id: randomUUID(), duration: '30 sec' },
+              { id: randomUUID(), duration: '30 sec' },
             ],
           },
           {
-            id: 14,
+            id: randomUUID(),
             name: 'Pigeon Pose',
             sets: [
-              { id: 43, duration: '45 sec' },
-              { id: 44, duration: '45 sec' },
+              { id: randomUUID(), duration: '45 sec' },
+              { id: randomUUID(), duration: '45 sec' },
             ],
           },
           {
-            id: 15,
+            id: randomUUID(),
             name: 'Hip Mobility Stretch',
             sets: [
-              { id: 45, duration: '60 sec' },
-              { id: 46, duration: '60 sec' },
-              { id: 47, duration: '60 sec' },
+              { id: randomUUID(), duration: '60 sec' },
+              { id: randomUUID(), duration: '60 sec' },
+              { id: randomUUID(), duration: '60 sec' },
             ],
           },
         ],
-        date: '2023-11-01',
+        date: new Date('2024-03-10'),
       },
       {
-        userId: 1,
+        userId: userID2,
         name: 'Core & Abs',
         exercises: [
           {
-            id: 16,
+            id: randomUUID(),
             name: 'Crunches',
             sets: [
-              { id: 48, reps: 20 },
-              { id: 49, reps: 20 },
-              { id: 50, reps: 20 },
+              { id: randomUUID(), reps: 20 },
+              { id: randomUUID(), reps: 20 },
+              { id: randomUUID(), reps: 20 },
             ],
           },
           {
-            id: 17,
+            id: randomUUID(),
             name: 'Leg Raises',
             sets: [
-              { id: 51, reps: 15 },
-              { id: 52, reps: 15 },
-              { id: 53, reps: 15 },
+              { id: randomUUID(), reps: 15 },
+              { id: randomUUID(), reps: 15 },
+              { id: randomUUID(), reps: 15 },
             ],
           },
           {
-            id: 18,
+            id: randomUUID(),
             name: 'Russian Twists',
             sets: [
-              { id: 54, reps: 30, weight: 20 },
-              { id: 55, reps: 30, weight: 20 },
-              { id: 56, reps: 30, weight: 20 },
+              { id: randomUUID(), reps: 30, weight: 20 },
+              { id: randomUUID(), reps: 30, weight: 20 },
+              { id: randomUUID(), reps: 30, weight: 20 },
             ],
           },
         ],
-        date: '2023-11-05',
+        date: new Date('2024-03-20'),
       },
     ];
 

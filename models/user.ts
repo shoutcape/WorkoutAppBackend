@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../utils/db';
 
 class User extends Model {
-  public id!: number;
+  public id!: string;
   public username!: string;
   public passwordHash!: string; 
 }
@@ -10,8 +10,7 @@ class User extends Model {
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
       primaryKey: true,
     },
     username: {

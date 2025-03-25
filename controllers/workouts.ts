@@ -4,7 +4,8 @@ const workoutRouter = Router()
 import {Workout} from "../models"
 
 workoutRouter.get('/workouts', async(req, res) => {
-  const workouts = await Workout.findAll()
+  const workouts = await Workout.findAll({order: [['date', 'DESC']]})
+  console.log(workouts)
   res.json(workouts)
 })
 
