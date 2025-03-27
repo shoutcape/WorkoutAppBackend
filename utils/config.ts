@@ -8,8 +8,12 @@ const config = {
   DATABASE_URL: production
     ? process.env.DATABASE_URL
     : 'postgres://postgres:salasana@localhost:5432/postgres',
-  PORT: process.env.PORT || 3000,
-  ssl: production
+  PORT: process.env.PORT || 3001,
+  ssl: production,
+  auth0: {
+    domain: process.env.AUTH0_DOMAIN || '',
+    audience: process.env.AUTH0_AUDIENCE || '',
+  }
 }
 
 export default config

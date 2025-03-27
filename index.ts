@@ -9,6 +9,11 @@ import { sequelize } from './utils/db';
 import logger from './utils/logger'
 import middleware from './utils/middleware';
 import loginRouter from './controllers/login';
+import { Request as ExpressRequest, Response } from 'express';
+
+interface AuthRequest extends ExpressRequest {
+  auth?: any;
+}
 
 const app = express();
 
@@ -24,6 +29,16 @@ app.use("/", loginRouter)
 
 //errorHandler
 app.use(middleware.errorHandler)
+
+// Public routes
+app.get('/api/public', (_req, res) => {
+  res.json({ message: 'This is a public endpoint' });
+});
+
+// Protected routes
+app.get('/api/protected', middleware.checkJwt, (req: AuthRequest, res: Response) => {
+  res.json({ message: 'This is a protected endpoint', user: req.auth });
+});
 
 sequelize.authenticate()
   .then(() => console.log('Database connected'))
