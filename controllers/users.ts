@@ -1,6 +1,8 @@
 import { Router, Response, Request } from 'express';
 import { User } from '../models';
 import { hash } from 'bcryptjs';
+import { v4 as randomUUID } from 'uuid';
+
 
 const userRouter = Router();
 
@@ -23,6 +25,7 @@ userRouter.post('/users', async (req: Request, res: Response) => {
 
   //add user to database
   const newUser = await User.create({
+    id: randomUUID(),
     username: username,
     passwordHash: passwordHash,
   });
