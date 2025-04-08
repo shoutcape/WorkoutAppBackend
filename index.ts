@@ -9,11 +9,7 @@ import { sequelize } from './utils/db';
 import logger from './utils/logger'
 import middleware from './utils/middleware';
 import loginRouter from './controllers/login';
-import { Request as ExpressRequest, Response } from 'express';
 
-interface AuthRequest extends ExpressRequest {
-  auth?: any;
-}
 
 const app = express();
 
@@ -25,10 +21,10 @@ app.use(cors())
 //Routes
 app.use("/api", workoutRouter)
 app.use("/api", userRouter)
-app.use("/", loginRouter)
+app.use("/api", loginRouter)
 
 //errorHandler
-app.use(middleware.errorHandler)
+app.use(middleware.errorHandler as express.ErrorRequestHandler)
 
 // Public routes
 app.get('/api/public', (_req, res) => {
@@ -36,8 +32,8 @@ app.get('/api/public', (_req, res) => {
 });
 
 // Protected routes
-app.get('/api/protected', middleware.checkJwt, (req: AuthRequest, res: Response) => {
-  res.json({ message: 'This is a protected endpoint', user: req.auth });
+app.get('/api/private', middleware.checkJwt, (_req, res) => {
+  res.json({ message: 'This is a private endpoint' });
 });
 
 sequelize.authenticate()

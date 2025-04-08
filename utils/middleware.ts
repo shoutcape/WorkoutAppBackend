@@ -1,20 +1,69 @@
 import { NextFunction, Request, Response } from 'express';
 import logger from './logger';
-import { expressjwt as jwt } from 'express-jwt';
-import jwksRsa from 'jwks-rsa';
+import jwt from 'jsonwebtoken';
 import config from './config';
 
-const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
+export interface AuthRequest extends Request {
+  auth?: {
+    id: string;
+    username: string;
+  };
+}
+
+class HttpError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number = 500) {
+    super(message);
+    this.name = 'HttpError';
+    this.statusCode = statusCode;
+  }
+}
+
+const checkJwt = async (
+  req: AuthRequest,
+  _res: Response,
+  next: NextFunction,
+) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // This error will automatically be passed to the error handler
+    throw new HttpError('Token missing or invalid', 401);
+  }
+
+  const token = authHeader.substring(7);
+
+  const decodedToken = jwt.verify(
+    token,
+    config.JWT_SECRET || 'your_jwt_secret',
+  ) as any;
+  req.auth = { id: decodedToken.id, username: decodedToken.username };
+  next();
+};
+
+const errorHandler = (
+  err: Error,
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
   logger.error(err.message);
+
+
+  // Check for custom HttpError
+  if (err instanceof HttpError) {
+    return res.status(err.statusCode).json({
+      error: err.message,
+    });
+  }
 
   // Handling specific error types
   if (err.name === 'SequelizeUniqueConstraintError') {
     res.status(400).json({
       error: 'Username must be unique',
     });
-  } 
-
-  else {
+  } else {
     // Default error handler
     res.status(500).json({
       error: err.message || 'An unexpected error occurred',
@@ -22,21 +71,9 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
   }
 };
 
-const checkJwt = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${config.auth0.domain}/.well-known/jwks.json`
-  }),
-  audience: config.auth0.audience,
-  issuer: `https://${config.auth0.domain}/`,
-  algorithms: ['RS256']
-});
-
 const middleware = {
   errorHandler,
-  checkJwt
+  checkJwt,
 };
 
 export default middleware;

@@ -10,10 +10,7 @@ const config = {
     : 'postgres://postgres:salasana@localhost:5432/postgres',
   PORT: process.env.PORT || 3001,
   ssl: production,
-  auth0: {
-    domain: process.env.AUTH0_DOMAIN || '',
-    audience: process.env.AUTH0_AUDIENCE || '',
-  }
+  JWT_SECRET: process.env.JWT_SECRET
 }
 
 export default config
